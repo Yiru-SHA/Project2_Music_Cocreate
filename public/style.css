@@ -1,0 +1,27 @@
+/* how could I make the canvus always align in the central*/
+/* 
+.project_wrapper{
+    display: flex;
+    text-align: center;
+    position: relative;
+    min-height: 200px;
+    overflow: hidden;
+    margin-bottom: 30px;
+  } */
+
+  
+  html, body {
+    height: 100%;
+  }
+  
+  body {
+    
+    display: flex;
+  
+    /* This centers our sketch horizontally. */
+    justify-content: center;
+  
+    /* This centers our sketch vertically. */
+    align-items: center;
+    margin: 400px;
+  }
