@@ -20,6 +20,13 @@ let io = require('socket.io').listen(server);
 io.sockets.on('connection', function(socket) {
     console.log("We have a new client: " + socket.id);
 
+    socket.on('disconnect',function(){
+        console.log("socket disconected"+socket.id);
+    })
 
+    socket.on('bubbleData',(data)=>{
+    console.log(data);   
+    io.sockets.emit('bubbleData',(data));
+    })
 
 })

@@ -3,14 +3,32 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Click Music</title>
+    <title>O.Together Music</title>
+    <link href="style.css" rel="stylesheet"/>
 </head>
 <body>
+    <div class="project_contain">
+           <!--PROJECT title-->
+        <h1 class="project_title">O.together</h1>
+        <!--PROJECT INSTRUCTION-->
+        <div class="project_instruction">
+               
+                <p class="p_text">O.together is a webpage that invites multi-players to co-create ambient sounds!
+                </p>
+            <div class ="button">
+                <p class="p_text_1">Mouse over to play the background music!
+                </p>
+                <button id="Button_bgMusic">Play Background Music!</button>
+                <p class="p_text_1">Mouse over to get the most updated music!
+                </p>
+                <button id="Button_UTD">Up to date!</button>
+            </div>
+        </div>
 
-    <div class="project_wrapper">
-        <div id="c1" class="canvas_1"></div> 
-        <button id="clickbgMusic">Start Background Music!</button>
-    
+        <!--P5 CANVAS-->   
+        <div class="project_wrapper">
+            <div id="c1" class="canvas"></div> 
+        </div>
     </div>
 
     <script type="text/javascript" src="/socket.io/socket.io.js"></script>
