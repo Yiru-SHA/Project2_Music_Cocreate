@@ -116,6 +116,8 @@ function mouseOverBgMusic() {
 }
 
 function mousePressed() {
+
+  //if(mouse X )
   console.log(mouseX,mouseY);
   
     //let al = 100;
