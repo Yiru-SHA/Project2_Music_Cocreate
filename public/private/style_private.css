@@ -1,0 +1,79 @@
+html,body{
+    font-family: 'Arial';
+    display: flex;
+    flex-direction: row;
+    margin: 0px;
+    background-color: white;
+    /* background-image: url("bgIMG.jpeg");
+    background-repeat: repeat-x; */
+}
+
+.project_contain{
+    /* display: flex;
+    flex-direction: row; */
+    margin-top: 0px;
+}
+
+.project_title{
+    font-size: 36px;
+    display: flex;
+    margin: 20px;
+  } 
+
+.project_instruction{
+    display: flex;
+    flex-direction: column;
+    justify-content: left;
+    text-align: left;
+    position: relative;
+    margin-left: 20px;
+    margin-right: 10px;
+    font-size:18px;
+  } 
+
+  .p_text{
+    margin-top: 0px;
+  }
+
+
+#Button_bgMusic{
+    display: flex;
+    background-color: #12FBD1;
+    color: white;
+    padding: 9px;
+    border: none;
+    font-size: 16px;
+    border-radius: 20px;
+}
+
+#Button_bgMusic{
+    display: flex;
+    background-color: #12FBD1;
+    color: black;
+    padding: 9px;
+    border: none;
+    font-size: 16px;
+    border-radius: 20px;
+    margin-top: 10px;
+}
+
+#Button_UTD{
+    display: flex;
+    background-color: #12FBD1;
+    color: black;
+    padding: 9px;
+    border: none;
+    font-size: 16px;
+    border-radius: 20px;
+    margin-top: 10px;
+}
+
+.p5Canvas{
+    margin-top: 18px;
+}
+  main{
+    display: flex;
+    justify-content: center;
+    margin-top: 60px;
+    align-items: center;
+  }

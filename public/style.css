@@ -68,12 +68,12 @@ html,body{
     margin-top: 10px;
 }
 
-.p5Canvas{
-    margin-top: 18px;
+canvas{
+    margin-top: 60px;
 }
-  main{
+  /* main{
     display: flex;
     justify-content: center;
     margin-top: 60px;
     align-items: center;
-  }
+  } */

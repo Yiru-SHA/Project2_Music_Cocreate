@@ -1,183 +1,216 @@
-
-/*
-Q1: line41, how could I adjust p5 canvas location in style ?
-Q2: line55, how could I make background music sustain （loop、repeat play）?
-Q3: line95, fade out doesn't work?
-Q4: line 121, how could I make bubble alpha works for fill(); ?
-*/
-
 /* Initialization */
 // <script type="text/javascript" src="/socket.io/socket.io.js"></script> to index.html
 let socket = io();
 
 //Listen for confirmation of connection
-socket.on('connect', function() {
+socket.on('connect', function () {
   console.log("Connected");
+  socket.emit('joined');
 });
 
+socket.on('joined',function(){
+  console.log("I want UserID");
+})
+
 /* -----P5----- */
-let bubbles =[];
-let receivedBubbles =[];
+let bubbles = [];
+let receivedBubbles = [];
 // make songs array
-let songs = ["Podington_Bear_-_No_Squirell_Commotion.mp3","Podington_Bear_-_13_-_New_Skin.mp3","amphibianComposite.mp3"]
-    
+let songs = [
+  "/Music/tibetan-singing-bowl.mp3",
+  "/Music/bird-whistling-robin-.mp3",
+  "/Music/fauxpress__bell-meditation.mp3",
+  "/Music/Podington_Bear_-_No_Squirell_Commotion.mp3", 
+  "/Music/Podington_Bear_-_13_-_New_Skin.mp3", 
+  "/Music/amphibianComposite.mp3"
+]
+
 //generate random
 let randomIndex;
 
 // generate global value
-let songsToPlay = [];  
+let songsToPlay = [];
 // let bgMusic = "amphibianComposite.mp3";
 // let playbgMusic;
+let backgroundMusic;
 
-function preload(){
-    //load all songs.音乐只能在preload里load
-    for (let i = 0; i < songs.length; i++){
-        songsToPlay[i] = loadSound(songs[i]);
-        }
-} 
-
-function setup(){
-    createCanvas(1000, 600);
-    background(178,255,44);
-    console.log("setup!")
-    
-  //  *** Q1:have not fixed: playbgMusic.play(); 
-  // background music play with click
-  // test: if button could trigger background music
-  // document.getElementById('clickbgMusic').addEventListener('click',()=>{
-  //   console.log("button is clicked!!")
-  
-  // mouse over for play background music
-  document.getElementById('Button_bgMusic').onmouseover = function(){mouseOver()};
-  function mouseOver(){
-    console.log("button is clicked!!") 
-    
-    let bgMusic = songsToPlay[2];
-    console.log(songsToPlay);
-
-    // //replay doesn't work, sustain seems cause echo
-    // //bgMusic.playMode('sustain');
-    // bgMusic.play();
-
-    // original version
-      if (bgMusic.isPlaying()) {
-          bgMusic.pause();} else {  
-          bgMusic.play();}
-      
-        console.log(bgMusic);
-        //bgMusic.play();
-        console.log(bgMusic.isPlaying());
-        //console.log(playbgMusic)
-        //document.getElementById("Button_bgMusic").style.color = "white";
-      }
-
-      //get data from server
-    socket.on('bubbleData',function(obj){
-        console.log("recieving bubble info!!" + obj.x + "," + obj.y + "," + obj.diameter)
-        console.log("receving color" + obj.col)
-        drawPos(obj);
-      }
-    );
-
-    // socket.on('bubbleData',newDrawing);
-
+function preload() {
+  //load all songs.音乐只能在preload里load
+  for (let i = 0; i < songs.length; i++) {
+    songsToPlay[i] = loadSound(songs[i]);
+  }
+  //make a background music
+  backgroundMusic = loadSound('/Music/rain-on-the-roof.mp3');
 }
 
-// function newDrawing(data)
-// {
-//   console.log('receving'+ data.x + "," + data.y + "," +data.diameter);
-//   fill('red');
-//   ellipse(data.x,data.y,data.diameter);
-// }
+/* -----setup----- */
+function setup() {
+  createCanvas(1000, 600);
+  console.log("setup!")
 
-function mousePressed(){
-    let al =100;
-    let colR = 30;
-    let colG = random(70,160);
-    let colB = random(10,200);
-    let c = color(colR,colG,colB,al);
-    let r = random(20,60);
+  // mouse over for play background music
+  document.getElementById('Button_bgMusic').onmouseover = function () { mouseOverBgMusic() };
+
+  //get data from server
+  socket.on('bubbleData', function (obj) {
+    console.log("recieving bubble info!!" + obj.x + "," + obj.y + "," + obj.diameter)
+    console.log("receving color" + obj.alp)
+    drawPos(obj);
+
+    // play music here
+    song = songsToPlay[obj.musicIndex];
+    console.log(song);
+
+    //use obj.musicJumpTime to move the song to wherever youw ant it to start from
+    //song.volume(1);
+    
+    song.setVolume(0.6,5,5);
+    //song.playMode('restart');
+    //console.log(volume);
+
+    song.play();
+  }
+  );
+
+ 
+  //play previews song
+  socket.on('previews', (data) => {
+    console.log(data);
+    let indexArray = data.indexes;
+    console.log(indexArray);
+
+    // doesn't work yet
+    for (let j = 0; j < indexArray.length; j++) {
+      let indexOne = indexArray[j];
+      console.log(indexOne);
+      // playPreviews(obj);
+      song = songsToPlay[indexOne];
+      song.setVolume(0,5,5);
+      song.play();
+      console.log("previews!!" + song);
+    }
+  })
+
+  // mouse over play song.index
+  document.getElementById('Button_UTD').onmouseover = function () {
+    socket.emit('playPreview')
+  };
+}
+
+function mouseOverBgMusic() {
+  console.log("button is clicked!!")
+  backgroundMusic.setVolume(0.7);
+  backgroundMusic.loop();
+
+  // // original version
+  // if (bgMusic.isPlaying()) {
+  //   bgMusic.pause();
+  // } else {
+  //   bgMusic.play();
+  // }
+
+  // console.log(bgMusic);
+  // //bgMusic.play();
+  // console.log(bgMusic.isPlaying());
+  // //console.log(playbgMusic)
+}
+
+function mousePressed() {
+  console.log(mouseX,mouseY);
+  
+    //let al = 100;
+    let colR = random(70, 200);
+    let colG = random(70, 160);
+    let colB = random(10, 200);
+    let c = color(colR, colG, colB);
+
+    //let c = color(colR, colG, colB, al);
+    let r = random(20, 60);
     // let c = color(30,random(70,160),random(10,200),alpha);
     console.log("mouse press color!!!" + c);
 
-    let b = new Bubble(mouseX,mouseY,r,c,al)
-    // console.log('sending' + mouseX + "," + mouseY)
-
-    // data.col is rgba()
-    let data={
-      x : mouseX,
-      y : mouseY,
-      diameter : r,
-      col : c,
-    }
-    socket.emit('bubbleData',data);
-
-    bubbles.push(b);
-    console.log(bubbles);
- 
     // random pick sound for mouse click
     randomIndex = Math.floor(random(songs.length));
+    //randomJumpTime = random(0, 30);
+
     console.log(randomIndex);
     console.log(songsToPlay[randomIndex]);
-   
-    song = songsToPlay[randomIndex];
-    console.log(song);
-    song.play();
-    //*** fade out doesn't work
-   // setVolume(0.2, [10], [20])
 
-
+    let data = {
+      x: mouseX,
+      y: mouseY,
+      diameter: r,
+      r: colR,
+      g: colG,
+      b: colB,
+      //alp: al,
+      musicIndex: randomIndex,
+      //musicJumpTime : randomJumpTime
+  
+  }
+  socket.emit('bubbleData', data);
 }
 
-function drawPos(pos){
+function drawPos(pos) {
 
-  let d = new Bubble(pos.x,pos.y,pos.diameter,pos.col,pos.al)
+  let d = new Bubble(pos.x, pos.y, pos.diameter, pos.r, pos.g, pos.b, pos.al)
   console.log('sending' + mouseX + "," + mouseY)
-  receivedBubbles.push(d);
+  bubbles.push(d);
 }
 
 let playOnce = true;
 
 //
 function draw() {
-    //background(178,255,44);
-    for(let i =0;i<bubbles.length;i++){
-  
+  background(178, 255, 44);
+  //background(178,255,44);
+  for (let i = 0; i < bubbles.length; i++) {
     //bubble[i].move();
     bubbles[i].show();
     bubbles[i].disappear();
+  }
+  //remove bubble when alpha =0;
+  for(let i = bubbles.length-1; i>=0;i--){
+    if(bubbles[i].finished()){
+      console.log("before" + bubbles.length);
+      bubbles.splice(i,1);
+      console.log("after" + bubbles.length);
     }
   }
+}
 
-  class Bubble { 
-    constructor(x, y,d,col,al) {
-      this.x = x;
-      this.y = y;
-      this.diameter = d;
-      this.alpha = al;
-      this.color =  col;
-    }
-  
-//     // move() {
-//     //   this.x = this.x + random(-1, 1);
-//     //   this.y = this.y + random(-2, 2);
-//     // }
-  
-    show() {
-      noStroke();
-      // *** Q2: could not change color alpha
-      //if alpha is less then 0, alpha = alpha -1, else alpha = 0;
-      fill(this.color,this.alpha);
-      //console.log("color_fill"+this.alpha)
-      circle(this.x,this.y,this.diameter);
-    }
-
-    disappear(){
-        this.alpha = this.alpha - 1;
-        this.diameter = this.diameter + 1;
-    }
+class Bubble {
+  constructor(x, y, d, r, g, b) {
+    this.x = x;
+    this.y = y;
+    this.diameter = d;
+    this.alpha = 180;
+    this.colR = r;
+    this.colG = g;
+    this.colB = b;
+    //this.color =  color(this.r,this.g,this.b,this.alpha);
   }
 
-  // function drawPos(pos){
-  //   circle(pos.x,pos.y,pos.diameter);
-  // }
+  //     // move() {
+  //     //   this.x = this.x + random(-1, 1);
+  //     //   this.y = this.y + random(-2, 2);
+  //     // }
+  show() {
+    noStroke();
+    // *** Q2: could not change color alpha
+    //if alpha is less then 0, alpha = alpha -1, else alpha = 0;
+    //fill(12, 98, 123, this.alpha);
+    fill(this.colR, this.colG, this.colB, this.alpha);
+    //console.log("color_fill"+this.alpha)
+    circle(this.x, this.y, this.diameter);
+  }
+
+  finished() {
+    return this.alpha < 0;
+  }
+
+  disappear() {
+    this.alpha = this.alpha - 1;
+    this.diameter = this.diameter + 1;
+  }
+}
