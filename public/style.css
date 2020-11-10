@@ -1,9 +1,10 @@
 html,body{
     font-family: 'Arial';
+    color:white;
     display: flex;
     flex-direction: row;
     margin: 0px;
-    background-color: white;
+    background-color: black;
     /* background-image: url("bgIMG.jpeg");
     background-repeat: repeat-x; */
 }
@@ -12,10 +13,11 @@ html,body{
     /* display: flex;
     flex-direction: row; */
     margin-top: 0px;
+    background-color:black;
 }
 
 .project_title{
-    font-size: 36px;
+    font-size: 48px;
     display: flex;
     margin: 20px;
   } 
@@ -55,6 +57,7 @@ html,body{
     font-size: 16px;
     border-radius: 20px;
     margin-top: 10px;
+    cursor:pointer;
 }
 
 #Button_UTD{
@@ -66,14 +69,23 @@ html,body{
     font-size: 16px;
     border-radius: 20px;
     margin-top: 10px;
+    cursor:pointer;
 }
 
 canvas{
     margin-top: 60px;
 }
-  /* main{
-    display: flex;
+  main{
+    background-color:rgb(178, 255, 44);
+    /* display: flex;
     justify-content: center;
     margin-top: 60px;
-    align-items: center;
-  } */
+    align-items: center; */
+  }
+
+ /* adjust the overall width whenever the window width is less than 640px */
+/* @media (max-width: 1200px) {
+	.main-container {
+		width: 60%;
+	}
+} */

@@ -20,6 +20,7 @@ let io = require('socket.io').listen(server);
 let private = io.of('/private');
 //save data from another socket,global
 let musicIndex =[];  
+let counter = 0;
 
 //Listen for individual clients/users to connect
 io.sockets.on('connection', function(socket) {
@@ -27,11 +28,20 @@ io.sockets.on('connection', function(socket) {
 
     socket.on('disconnect',function(){
         console.log("socket disconected"+socket.id);
+        counter--;
+        let disconnectUser ={
+            "UserID" : socket.id,
+            "UserLeft":counter
+        }
+        io.sockets.emit(disconnectUser);
     })
 
     socket.on('joined',()=>{
-        console.log("listened joined");
-        let idIndex = {"UserID" : socket.id}
+        counter++;
+        let idIndex = {
+            "UserID" : socket.id,
+            "UserJoined":counter
+    }
         io.sockets.emit('joined',(idIndex));
         console.log(idIndex);
     })

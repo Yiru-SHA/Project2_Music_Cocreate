@@ -8,8 +8,15 @@ socket.on('connect', function () {
   socket.emit('joined');
 });
 
-socket.on('joined',function(){
-  console.log("I want UserID");
+socket.on('joined',function(data){
+  // let userIndex = data;
+  console.log("get info" + data.UserJoined);
+  
+  document.getElementById('userCounter').innerHTML = "";
+  let elt = document.createElement('p');
+  elt.classList.add('userCounter');
+  elt.innerHTML = "Together! You got new connection: " + data.UserJoined;
+  document.getElementById('userCounter').appendChild(elt);
 })
 
 /* -----P5----- */
@@ -22,8 +29,10 @@ let songs = [
   "/Music/fauxpress__bell-meditation.mp3",
   "/Music/Podington_Bear_-_No_Squirell_Commotion.mp3", 
   "/Music/Podington_Bear_-_13_-_New_Skin.mp3", 
-  "/Music/amphibianComposite.mp3"
+  // "/Music/amphibianComposite.mp3"
 ]
+
+let slider;
 
 //generate random
 let randomIndex;
@@ -45,30 +54,41 @@ function preload() {
 
 /* -----setup----- */
 function setup() {
-  createCanvas(1000, 600);
-  console.log("setup!")
+  createCanvas(1400, windowHeight);
+  //console.log("setup!")
+
+  //slider = createSlider(0,1,0.5,0.2);
 
   // mouse over for play background music
-  document.getElementById('Button_bgMusic').onmouseover = function () { mouseOverBgMusic() };
+  document.getElementById('Button_bgMusic').onclick = function () { mouseOverBgMusic() };
 
   //get data from server
   socket.on('bubbleData', function (obj) {
-    console.log("recieving bubble info!!" + obj.x + "," + obj.y + "," + obj.diameter)
-    console.log("receving color" + obj.alp)
+    // console.log("recieving bubble info!!" + obj.x + "," + obj.y + "," + obj.diameter)
+    // console.log("receving color" + obj.alp)
     drawPos(obj);
 
     // play music here
-    song = songsToPlay[obj.musicIndex];
-    console.log(song);
+    //song = songsToPlay[obj.musicIndex];
+    song = songsToPlay[0];
+    //console.log(song);
 
-    //use obj.musicJumpTime to move the song to wherever youw ant it to start from
-    //song.volume(1);
-    
-    song.setVolume(0.6,5,5);
+    //return current volunme
+    //let currentVolume = song.volume();
+    //console.log(currentVolume);
+
+    //update the volume to a starting level
+    // let startVolume = 0.5;
+    // song.volume(startVolume);
+    // currentvolume = song.volume();
+    // console.log("new,"+ currentVolume)
+
+    //song.setVolume(1);
     //song.playMode('restart');
     //console.log(volume);
 
     song.play();
+
   }
   );
 
@@ -77,7 +97,7 @@ function setup() {
   socket.on('previews', (data) => {
     console.log(data);
     let indexArray = data.indexes;
-    console.log(indexArray);
+    //console.log(indexArray);
 
     // doesn't work yet
     for (let j = 0; j < indexArray.length; j++) {
@@ -87,14 +107,14 @@ function setup() {
       song = songsToPlay[indexOne];
       song.setVolume(0,5,5);
       song.play();
-      console.log("previews!!" + song);
+      //console.log("previews!!" + song);
     }
   })
 
   // mouse over play song.index
-  document.getElementById('Button_UTD').onmouseover = function () {
+  document.getElementById('Button_UTD').addEventListener ('click',()=>{
     socket.emit('playPreview')
-  };
+  });
 }
 
 function mouseOverBgMusic() {
@@ -116,10 +136,8 @@ function mouseOverBgMusic() {
 }
 
 function mousePressed() {
-
-  //if(mouse X )
-  console.log(mouseX,mouseY);
-  
+  //两个变量要用（）
+  if((mouseX>0 && mouseX<1400) && (mouseY>0 && mouseY<800)){  
     //let al = 100;
     let colR = random(70, 200);
     let colG = random(70, 160);
@@ -148,21 +166,20 @@ function mousePressed() {
       //alp: al,
       musicIndex: randomIndex,
       //musicJumpTime : randomJumpTime
-  
   }
   socket.emit('bubbleData', data);
+}
 }
 
 function drawPos(pos) {
 
   let d = new Bubble(pos.x, pos.y, pos.diameter, pos.r, pos.g, pos.b, pos.al)
-  console.log('sending' + mouseX + "," + mouseY)
+  //console.log('sending' + mouseX + "," + mouseY)
   bubbles.push(d);
 }
 
 let playOnce = true;
 
-//
 function draw() {
   background(178, 255, 44);
   //background(178,255,44);
@@ -174,9 +191,9 @@ function draw() {
   //remove bubble when alpha =0;
   for(let i = bubbles.length-1; i>=0;i--){
     if(bubbles[i].finished()){
-      console.log("before" + bubbles.length);
+      //console.log("before" + bubbles.length);
       bubbles.splice(i,1);
-      console.log("after" + bubbles.length);
+      //console.log("after" + bubbles.length);
     }
   }
 }
