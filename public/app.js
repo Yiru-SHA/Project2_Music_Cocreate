@@ -27,9 +27,11 @@ let songs = [
   "/Music/tibetan-singing-bowl.mp3",
   "/Music/bird-whistling-robin-.mp3",
   "/Music/fauxpress__bell-meditation.mp3",
-  "/Music/Podington_Bear_-_No_Squirell_Commotion.mp3", 
+  "/Music/Clip_No_Squirell_Commotion.mp3", 
   "/Music/Podington_Bear_-_13_-_New_Skin.mp3", 
-  // "/Music/amphibianComposite.mp3"
+  "/Music/Clip_amphibianComposite.mp3",
+  "/Music/Zen-bell-02.mp3",
+  "/Music/space-flight-sound-effect.mp3"
 ]
 
 let slider;
@@ -69,13 +71,13 @@ function setup() {
     drawPos(obj);
 
     // play music here
-    //song = songsToPlay[obj.musicIndex];
-    song = songsToPlay[0];
+    song = songsToPlay[obj.musicIndex];
+    //song = songsToPlay[0];
     //console.log(song);
 
     //return current volunme
-    //let currentVolume = song.volume();
-    //console.log(currentVolume);
+    // let currentVolume = song.volume();
+    // console.log(currentVolume);
 
     //update the volume to a starting level
     // let startVolume = 0.5;
@@ -203,7 +205,7 @@ class Bubble {
     this.x = x;
     this.y = y;
     this.diameter = d;
-    this.alpha = 180;
+    this.alpha = 200;
     this.colR = r;
     this.colG = g;
     this.colB = b;
@@ -222,6 +224,20 @@ class Bubble {
     fill(this.colR, this.colG, this.colB, this.alpha);
     //console.log("color_fill"+this.alpha)
     circle(this.x, this.y, this.diameter);
+    if((this.x>0 && this.x<700) &&(this.y>0 && this.y<400)){
+      fill(0,0,0, 0.7*this.alpha);
+    rect(2*this.x,2*this.y,1,this.diameter);
+    }else{
+      fill(0,0,0,0.7*this.alpha);
+    rect(0.5*this.x,2*this.y,this.diameter*2,3);
+    }
+    // if(this.x>700 && this.y<300){
+    //   fill(this.colG, this.colB, this.colR, 2*this.alpha);
+    // rect(0.5*this.x,2*this.y,2,this.diameter*2);
+    // }
+   
+    
+
   }
 
   finished() {
@@ -231,5 +247,9 @@ class Bubble {
   disappear() {
     this.alpha = this.alpha - 1;
     this.diameter = this.diameter + 1;
+    this.colR -=1;
+    this.colG +=1;
+    this.colB +=1;
+    
   }
 }

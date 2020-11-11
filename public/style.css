@@ -73,10 +73,12 @@ html,body{
 }
 
 canvas{
-    margin-top: 60px;
+    margin-top: 0px;
 }
   main{
-    background-color:rgb(178, 255, 44);
+    /* background-color:rgb(178, 255, 44); */
+    background-color:black);
+
     /* display: flex;
     justify-content: center;
     margin-top: 60px;
