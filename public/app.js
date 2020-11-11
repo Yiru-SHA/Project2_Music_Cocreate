@@ -122,19 +122,15 @@ function setup() {
 function mouseOverBgMusic() {
   console.log("button is clicked!!")
   backgroundMusic.setVolume(0.7);
-  backgroundMusic.loop();
+  // backgroundMusic.loop();
 
-  // // original version
-  // if (bgMusic.isPlaying()) {
-  //   bgMusic.pause();
-  // } else {
-  //   bgMusic.play();
-  // }
-
-  // console.log(bgMusic);
-  // //bgMusic.play();
-  // console.log(bgMusic.isPlaying());
-  // //console.log(playbgMusic)
+  // original version
+  if (backgroundMusic.isPlaying()) {
+    backgroundMusic.pause();
+  } else {
+    //backgroundMusic.play();
+    backgroundMusic.loop();
+  }
 }
 
 function mousePressed() {

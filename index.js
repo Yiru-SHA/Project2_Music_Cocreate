@@ -67,6 +67,23 @@ private.on('connection', function(socket) {
     console.log("private Namespace conneted!!");
     console.log("We have a new client: " + socket.id);
 
+    socket.on('playPreview',()=>{
+        console.log("mouse is overed")
+        let mIndex = {"indexes": musicIndex};
+        socket.emit('previews',mIndex);
+        console.log(mIndex);
+    })
+
+    socket.on('joined',()=>{
+        counter++;
+        let idIndex = {
+            "UserID" : socket.id,
+            "UserJoined":counter
+    }
+        io.sockets.emit('joined',(idIndex));
+        console.log(idIndex.UserJoined);
+    })
+
     socket.on('disconnect',function(){
         console.log("socket disconected"+socket.id);
     })
@@ -74,6 +91,7 @@ private.on('connection', function(socket) {
     socket.on('bubbleData',(data)=>{
     console.log(data);   
     private.emit('bubbleData',(data));
+    musicIndex.push(data.musicIndex);
     });
 
 })
