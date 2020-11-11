@@ -15,7 +15,7 @@ socket.on('joined',function(data){
   document.getElementById('userCounter').innerHTML = "";
   let elt = document.createElement('p');
   elt.classList.add('userCounter');
-  elt.innerHTML = "Together! You got new connection: " + data.UserJoined;
+  elt.innerHTML = "Together! You have new connections: " + data.UserJoined;
   document.getElementById('userCounter').appendChild(elt);
 })
 
@@ -34,7 +34,7 @@ let songs = [
   "/Music/space-flight-sound-effect.mp3"
 ]
 
-let slider;
+//let slider;
 
 //generate random
 let randomIndex;
@@ -54,6 +54,8 @@ function preload() {
   backgroundMusic = loadSound('/Music/rain-on-the-roof.mp3');
 }
 
+
+
 /* -----setup----- */
 function setup() {
   createCanvas(1400, windowHeight);
@@ -72,29 +74,25 @@ function setup() {
 
     // play music here
     song = songsToPlay[obj.musicIndex];
-    //song = songsToPlay[0];
-    //console.log(song);
-
-    //return current volunme
-    // let currentVolume = song.volume();
-    // console.log(currentVolume);
-
-    //update the volume to a starting level
-    // let startVolume = 0.5;
-    // song.volume(startVolume);
-    // currentvolume = song.volume();
-    // console.log("new,"+ currentVolume)
-
-    //song.setVolume(1);
-    //song.playMode('restart');
-    //console.log(volume);
-
     song.play();
+
+    volumeslider.addEventListener("mousemove", ()=>{
+      songsToPlay[0].volume = volumeslider.value / 100;
+    }); 
 
   }
   );
-
+  // control volume
+  // let audio = songsToPlay;
+  // let volume = document.getElementById('volume-control');
+  
+  // volume.addEventListener("change",function(e){
+  //   audio.volume = e.cureentTarget.value/100;
+  //   console.log("audio" , audio.volume);
+  // })
  
+
+
   //play previews song
   socket.on('previews', (data) => {
     console.log(data);

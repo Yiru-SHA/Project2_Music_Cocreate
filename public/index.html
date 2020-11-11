@@ -1,35 +1,39 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>O.Together Music</title>
-    <link href="style.css" rel="stylesheet"/>
+    <link href="style.css" rel="stylesheet" />
 </head>
+
 <body>
     <div class="project_contain">
-           <!--PROJECT title-->
+        <!--PROJECT title-->
         <h1 class="project_title">O.together</h1>
         <!--PROJECT INSTRUCTION-->
         <div class="project_instruction">
-               
-                <p class="p_text">O.together is a webpage that invites multi-players to co-create ambient sounds!
-                </p>
-            <div class ="button">
-                <p class="p_text_1">Mouse over to play the background music!
+
+            <p class="p_text">O.together is a webpage that invites multi-players to co-create ambient sounds!
+            </p>
+            <div class="button">
+                <p class="p_text_1">Like sound of rain?
                 </p>
                 <button id="Button_bgMusic">Play Background Music!</button>
-                <p class="p_text_1">Mouse over to get the most updated music!
+                <p class="p_text_1">Listen to what has been made!
                 </p>
                 <button id="Button_UTD">Get Previews Music!</button>
                 <br>
                 <div class="userCounter" id="userCounter"></div>
+                <br>
+                <input id="volumeslider" type="range" min="0" max="100" value="100" step="1">
             </div>
         </div>
 
-        <!--P5 CANVAS-->   
+        <!--P5 CANVAS-->
         <div class="project_wrapper">
-            <div id="c1" class="canvas"></div> 
+            <div id="c1" class="canvas"></div>
         </div>
     </div>
 
@@ -39,4 +43,5 @@
     <script src=app.js></script>
 
 </body>
+
 </html>
