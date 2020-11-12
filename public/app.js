@@ -69,6 +69,18 @@ function setup() {
     song.play();
 
     // doesn't work yet
+    // let currentVolume = songsToPlay[0].volume();
+    // console.log(currentVolume);
+
+    // update the volume to a starting level
+    // replace the '???' with a start value like 100
+    // let startVolume = 0.7;
+    // song.volume(startVolume);
+    // currentVolume = song.volume();
+    // console.log(currentVolume);
+
+
+    // doesn't work yet
     volumeslider.addEventListener("mousemove", () => {
       songsToPlay[0].volume = volumeslider.value / 100;
     })
