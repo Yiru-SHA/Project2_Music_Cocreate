@@ -8,10 +8,10 @@ socket.on('connect', function () {
   socket.emit('joined');
 });
 
-socket.on('joined',function(data){
+socket.on('joined', function (data) {
   // let userIndex = data;
   console.log("get info" + data.UserJoined);
-  
+
   document.getElementById('userCounter').innerHTML = "";
   let elt = document.createElement('p');
   elt.classList.add('userCounter');
@@ -21,20 +21,18 @@ socket.on('joined',function(data){
 
 /* -----P5----- */
 let bubbles = [];
-let receivedBubbles = [];
+//let receivedBubbles = [];
 // make songs array
 let songs = [
   "/Music/tibetan-singing-bowl.mp3",
   "/Music/bird-whistling-robin-.mp3",
   "/Music/fauxpress__bell-meditation.mp3",
-  "/Music/Clip_No_Squirell_Commotion.mp3", 
-  "/Music/Podington_Bear_-_13_-_New_Skin.mp3", 
+  "/Music/Clip_No_Squirell_Commotion.mp3",
+  "/Music/Podington_Bear_-_13_-_New_Skin.mp3",
   "/Music/Clip_amphibianComposite.mp3",
   "/Music/Zen-bell-02.mp3",
   "/Music/space-flight-sound-effect.mp3"
 ]
-
-//let slider;
 
 //generate random
 let randomIndex;
@@ -54,44 +52,28 @@ function preload() {
   backgroundMusic = loadSound('/Music/rain-on-the-roof.mp3');
 }
 
-
-
 /* -----setup----- */
 function setup() {
   createCanvas(1400, windowHeight);
   //console.log("setup!")
-
-  //slider = createSlider(0,1,0.5,0.2);
 
   // mouse over for play background music
   document.getElementById('Button_bgMusic').onclick = function () { mouseOverBgMusic() };
 
   //get data from server
   socket.on('bubbleData', function (obj) {
-    // console.log("recieving bubble info!!" + obj.x + "," + obj.y + "," + obj.diameter)
-    // console.log("receving color" + obj.alp)
     drawPos(obj);
 
     // play music here
     song = songsToPlay[obj.musicIndex];
     song.play();
 
-    volumeslider.addEventListener("mousemove", ()=>{
+    // doesn't work yet
+    volumeslider.addEventListener("mousemove", () => {
       songsToPlay[0].volume = volumeslider.value / 100;
-    }); 
-
+    })
   }
   );
-  // control volume
-  // let audio = songsToPlay;
-  // let volume = document.getElementById('volume-control');
-  
-  // volume.addEventListener("change",function(e){
-  //   audio.volume = e.cureentTarget.value/100;
-  //   console.log("audio" , audio.volume);
-  // })
- 
-
 
   //play previews song
   socket.on('previews', (data) => {
@@ -105,14 +87,14 @@ function setup() {
       console.log(indexOne);
       // playPreviews(obj);
       song = songsToPlay[indexOne];
-      song.setVolume(0,5,5);
+      song.setVolume(0, 5, 5);
       song.play();
       //console.log("previews!!" + song);
     }
   })
 
   // mouse over play song.index
-  document.getElementById('Button_UTD').addEventListener ('click',()=>{
+  document.getElementById('Button_UTD').addEventListener('click', () => {
     socket.emit('playPreview')
   });
 }
@@ -133,7 +115,7 @@ function mouseOverBgMusic() {
 
 function mousePressed() {
   //两个变量要用（）
-  if((mouseX>0 && mouseX<1400) && (mouseY>0 && mouseY<800)){  
+  if ((mouseX > 0 && mouseX < 1400) && (mouseY > 0 && mouseY < 800)) {
     //let al = 100;
     let colR = random(70, 200);
     let colG = random(70, 160);
@@ -147,8 +129,6 @@ function mousePressed() {
 
     // random pick sound for mouse click
     randomIndex = Math.floor(random(songs.length));
-    //randomJumpTime = random(0, 30);
-
     console.log(randomIndex);
     console.log(songsToPlay[randomIndex]);
 
@@ -162,9 +142,9 @@ function mousePressed() {
       //alp: al,
       musicIndex: randomIndex,
       //musicJumpTime : randomJumpTime
+    }
+    socket.emit('bubbleData', data);
   }
-  socket.emit('bubbleData', data);
-}
 }
 
 function drawPos(pos) {
@@ -185,10 +165,10 @@ function draw() {
     bubbles[i].disappear();
   }
   //remove bubble when alpha =0;
-  for(let i = bubbles.length-1; i>=0;i--){
-    if(bubbles[i].finished()){
+  for (let i = bubbles.length - 1; i >= 0; i--) {
+    if (bubbles[i].finished()) {
       //console.log("before" + bubbles.length);
-      bubbles.splice(i,1);
+      bubbles.splice(i, 1);
       //console.log("after" + bubbles.length);
     }
   }
@@ -203,35 +183,20 @@ class Bubble {
     this.colR = r;
     this.colG = g;
     this.colB = b;
-    //this.color =  color(this.r,this.g,this.b,this.alpha);
   }
 
-  //     // move() {
-  //     //   this.x = this.x + random(-1, 1);
-  //     //   this.y = this.y + random(-2, 2);
-  //     // }
   show() {
     noStroke();
-    // *** Q2: could not change color alpha
-    //if alpha is less then 0, alpha = alpha -1, else alpha = 0;
-    //fill(12, 98, 123, this.alpha);
     fill(this.colR, this.colG, this.colB, this.alpha);
     //console.log("color_fill"+this.alpha)
     circle(this.x, this.y, this.diameter);
-    if((this.x>0 && this.x<700) &&(this.y>0 && this.y<400)){
-      fill(0,0,0, 0.7*this.alpha);
-    rect(2*this.x,2*this.y,1,this.diameter);
-    }else{
-      fill(0,0,0,0.7*this.alpha);
-    rect(0.5*this.x,2*this.y,this.diameter*2,3);
+    if ((this.x > 0 && this.x < 700) && (this.y > 0 && this.y < 400)) {
+      fill(0, 0, 0, 0.7 * this.alpha);
+      rect(2 * this.x, 2 * this.y, 1, this.diameter);
+    } else {
+      fill(0, 0, 0, 0.7 * this.alpha);
+      rect(0.5 * this.x, 2 * this.y, this.diameter * 2, 3);
     }
-    // if(this.x>700 && this.y<300){
-    //   fill(this.colG, this.colB, this.colR, 2*this.alpha);
-    // rect(0.5*this.x,2*this.y,2,this.diameter*2);
-    // }
-   
-    
-
   }
 
   finished() {
@@ -241,9 +206,8 @@ class Bubble {
   disappear() {
     this.alpha = this.alpha - 1;
     this.diameter = this.diameter + 1;
-    this.colR -=1;
-    this.colG +=1;
-    this.colB +=1;
-    
+    this.colR -= 1;
+    this.colG += 1;
+    this.colB += 1;
   }
 }
