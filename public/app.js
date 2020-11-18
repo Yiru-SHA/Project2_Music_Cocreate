@@ -66,10 +66,16 @@ function setup() {
 
     // play music here
     song = songsToPlay[obj.musicIndex];
+    song.setVolume(1);
+    song.setVolume(0,2,1);
+    let currentVolume = song.getVolume();
+    console.log(currentVolume);
     song.play();
 
+    console.log(song);
+
     // doesn't work yet
-    // let currentVolume = songsToPlay[0].volume();
+    // let currentVolume = song.volume();
     // console.log(currentVolume);
 
     // update the volume to a starting level
@@ -81,9 +87,9 @@ function setup() {
 
 
     // doesn't work yet
-    volumeslider.addEventListener("mousemove", () => {
-      songsToPlay[0].volume = volumeslider.value / 100;
-    })
+    // volumeslider.addEventListener("mousemove", () => {
+    //   songsToPlay[0].volume = volumeslider.value / 100;
+    // })
   }
   );
 
@@ -114,6 +120,7 @@ function setup() {
 function mouseOverBgMusic() {
   console.log("button is clicked!!")
   backgroundMusic.setVolume(0.7);
+
   // backgroundMusic.loop();
 
   // original version
